@@ -1,0 +1,84 @@
+CREATE TABLE books (
+id INT(6) AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(255) NOT NULL,
+writer VARCHAR(255) NOT NULL,
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE libraries (
+id INT(6) AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+address VARCHAR(255) NOT NULL,
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE workPattern (
+id INT(6) AUTO_INCREMENT PRIMARY KEY,
+pattern text,
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+id INT(6) AUTO_INCREMENT PRIMARY KEY,
+firstName VARCHAR(30) NOT NULL,
+lastName VARCHAR(30) NOT NULL,
+email VARCHAR(255) NOT NULL,
+password VARCHAR(32) NOT NULL,
+tokenAccess VARCHAR(32) DEFAULT NULL,
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE library_patern (
+id INT(6) AUTO_INCREMENT ,
+id_library INT(6),
+id_pattern INT(6),
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (id_library) REFERENCES  libraries(id),
+FOREIGN KEY (id_patern) REFERENCES  workPattern(id),
+constraint id_library_patern primary key(id,id_library,id_patern)
+);
+
+CREATE TABLE library_book(
+id INT(6) AUTO_INCREMENT ,
+id_library INT(6),
+id_book INT(6),
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (id_library) REFERENCES  libraries(id),
+FOREIGN KEY (id_book) REFERENCES  books(id),
+constraint id_library_book primary key(id,id_library,id_book)
+);
+
+CREATE TABLE appointments(
+id INT(6) AUTO_INCREMENT,
+id_user INT(6),
+id_library_book INT(6),
+status VARCHAR(10) NOT NULL,
+appointmentDate datetime NOT NULL,
+update_at TIMESTAMP NOT NULL
+    DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (id_user) REFERENCES  users(id),
+FOREIGN KEY (id_library_book) REFERENCES  library_book(id),
+constraint id_appointment primary key(id,id_user,id_library_book)
+);
+
+
